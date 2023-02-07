@@ -116,3 +116,5 @@ pipeline:
                       yarn task --task sandbox --template $(yarn get-template daily sandbox) --no-link --start-from=never --junit
         when:
           pipelineStatus: All
+        strategy:
+          parallelism: 27
