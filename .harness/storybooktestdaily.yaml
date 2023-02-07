@@ -86,5 +86,5 @@ pipeline:
                     bucket: test-storybook-yarn
                     key: prettydocs-yarn-2-cache-v4--{{ checksum "code/yarn.lock" }}--{{ checksum "scripts/yarn.lock" }}
                     sourcePaths:
-                      - /.yarn/berry/cache
+                      - .yarn/berry/cache
                     archiveFormat: Tar
