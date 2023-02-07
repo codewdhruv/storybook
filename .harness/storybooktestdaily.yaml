@@ -56,3 +56,24 @@ pipeline:
                       #!/bin/bash -eo pipefail
                       which curl > curl_exists; echo $? | grep -q '1' && echo curl not installed && rm curl_exists && exit 1
                       rm curl_exists
+              - step:
+                  type: Run
+                  name: Discord setting success condition
+                  identifier: Discord_setting_success_condition
+                  spec:
+                    shell: Sh
+                    command: |-
+                      #!/bin/bash -eo pipefail
+                      echo 'export DISCORD_BUILD_STATUS="success"' >> $BASH_ENV
+              - step:
+                  type: Run
+                  name: Provide if non bash shell
+                  identifier: Provide_if_non_bash_shell
+                  spec:
+                    shell: Sh
+                    command: |
+                      #!/bin/bash -eo pipefail
+                      if [ ! -x /bin/bash ]; then
+                        echo Bash not installed.
+                        exit 1
+                      fi
