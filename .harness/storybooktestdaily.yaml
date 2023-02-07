@@ -90,3 +90,27 @@ pipeline:
                     sourcePaths:
                       - .yarn/berry/cache
                     archiveFormat: Tar
+    - stage:
+        name: create-sandboxes
+        identifier: createsandboxes
+        description: ""
+        type: CI
+        spec:
+          cloneCodebase: true
+          platform:
+            os: Linux
+            arch: Amd64
+          runtime:
+            type: Cloud
+            spec: {}
+          execution:
+            steps:
+              - step:
+                  type: Run
+                  name: Create sandboxes
+                  identifier: Create_sandboxes
+                  spec:
+                    shell: Sh
+                    command: |-
+                      #!/bin/bash -eo pipefail
+                      yarn task --task sandbox --template $(yarn get-template daily sandbox) --no-link --start-from=never --junit
