@@ -114,3 +114,5 @@ pipeline:
                     command: |-
                       #!/bin/bash -eo pipefail
                       yarn task --task sandbox --template $(yarn get-template daily sandbox) --no-link --start-from=never --junit
+        when:
+          pipelineStatus: All
