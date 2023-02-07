@@ -77,3 +77,14 @@ pipeline:
                         echo Bash not installed.
                         exit 1
                       fi
+              - step:
+                  type: SaveCacheGCS
+                  name: Save Yarn Cache
+                  identifier: Save_Yarn_Cache
+                  spec:
+                    connectorRef: gcpdhruba
+                    bucket: test-storybook-yarn
+                    key: prettydocs-yarn-2-cache-v4--{{ checksum "code/yarn.lock" }}--{{ checksum "scripts/yarn.lock" }}
+                    sourcePaths:
+                      - ~/.yarn/berry/cache
+                    archiveFormat: Tar
