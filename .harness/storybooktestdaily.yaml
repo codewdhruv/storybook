@@ -64,7 +64,7 @@ pipeline:
                     shell: Sh
                     command: |-
                       #!/bin/bash -eo pipefail
-                      echo 'export DISCORD_BUILD_STATUS="success"' >> $BASH_ENV
+                      echo 'export DISCORD_BUILD_STATUS="success"' 
               - step:
                   type: Run
                   name: Provide if non bash shell
