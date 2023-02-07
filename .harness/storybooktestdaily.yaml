@@ -90,6 +90,18 @@ pipeline:
                     sourcePaths:
                       - .yarn/berry/cache
                     archiveFormat: Tar
+              - step:
+                  type: Run
+                  name: Run_6
+                  identifier: Run_6
+                  spec:
+                    shell: Sh
+                    command: |-
+                      #!/bin/bash -eo pipefail
+                      yarn task --task sandbox --template $(yarn get-template daily sandbox) --no-link --start-from=never --junit
+                  when:
+                    stageStatus: All
+                  failureStrategies: []
     - stage:
         name: create-sandboxes
         identifier: createsandboxes
