@@ -71,12 +71,14 @@ pipeline:
                   identifier: Provide_if_non_bash_shell
                   spec:
                     shell: Sh
-                    command: |
+                    command: |-
                       #!/bin/bash -eo pipefail
                       if [ ! -x /bin/bash ]; then
                         echo Bash not installed.
                         exit 1
                       fi
+
+                      ls
               - step:
                   type: SaveCacheGCS
                   name: Save Yarn Cache
