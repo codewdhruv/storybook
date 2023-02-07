@@ -36,3 +36,13 @@ pipeline:
                       #!/bin/bash -eo pipefail
                       yarn task --task compile --start-from=auto --no-link --debug
                       git diff --exit-code
+              - step:
+                  type: Run
+                  name: Publish to verdaccio
+                  identifier: Publish_to_verdaccio
+                  spec:
+                    shell: Sh
+                    command: |-
+                      #!/bin/bash -eo pipefail
+                      cd code
+                      yarn local-registry --publish
