@@ -139,6 +139,20 @@ pipeline:
 
                           ls
                   - step:
+                      type: Run
+                      name: Run_6
+                      identifier: Run_6
+                      spec:
+                        shell: Sh
+                        command: |-
+                          #!/bin/bash -eo pipefail
+                          cd code
+                          yarn storybook:ui:chromatic
+                          yarn storybook:blocks:chromatic
+                      when:
+                        stageStatus: All
+                      failureStrategies: []
+                  - step:
                       type: SaveCacheGCS
                       name: Save Yarn Cache
                       identifier: Save_Yarn_Cache
@@ -234,7 +248,7 @@ pipeline:
                         command: |-
                           #!/bin/bash -eo pipefail
                           cd code
-                          ls
+                          npm install
             when:
               pipelineStatus: All
   allowStageExecutions: true
