@@ -11,61 +11,141 @@ pipeline:
         repoName: storybook
         build: <+input>
   stages:
-    - stage:
-        name: pretty docs
-        identifier: pretty_docs
-        description: ""
-        type: CI
-        spec:
-          cloneCodebase: true
-          platform:
-            os: Linux
-            arch: Amd64
-          runtime:
-            type: Cloud
-            spec: {}
-          execution:
-            steps:
-              - step:
-                  type: Run
-                  name: Install Yarn
-                  identifier: Install_Yarn
-                  spec:
-                    shell: Sh
-                    command: |-
-                      #!/bin/bash -eo pipefail
-                      cd scripts
-                      yarn install
-              - step:
-                  type: Run
-                  name: Run_2
-                  identifier: Run_2
-                  spec:
-                    shell: Sh
-                    command: |-
-                      cd .yarn
-                      ls -a
-              - step:
-                  type: SaveCacheGCS
-                  name: Save Yarn cache
-                  identifier: Save_Yarn_cache
-                  spec:
-                    connectorRef: gcpdhruba
-                    bucket: test-storybook-yarn
-                    key: prettydocs-yarn-2-cache-v4--{{ checksum "code/yarn.lock" }}--{{ checksum "scripts/yarn.lock" }}
-                    sourcePaths:
-                      - .yarn/berry/cache
-                    archiveFormat: Tar
-              - step:
-                  type: Run
-                  name: Prettier
-                  identifier: Prettier
-                  spec:
-                    shell: Sh
-                    command: |-
-                      #!/bin/bash -eo pipefail
-                      cd scripts
-                      yarn docs:prettier:check
-                  when:
-                    stageStatus: All
-                  failureStrategies: []
+    - parallel:
+        - stage:
+            name: pretty docs
+            identifier: pretty_docs
+            description: ""
+            type: CI
+            spec:
+              cloneCodebase: true
+              platform:
+                os: Linux
+                arch: Amd64
+              runtime:
+                type: Cloud
+                spec: {}
+              execution:
+                steps:
+                  - step:
+                      type: Run
+                      name: Install Yarn
+                      identifier: Install_Yarn
+                      spec:
+                        shell: Sh
+                        command: |-
+                          #!/bin/bash -eo pipefail
+                          cd scripts
+                          yarn install
+                  - step:
+                      type: Run
+                      name: Run_2
+                      identifier: Run_2
+                      spec:
+                        shell: Sh
+                        command: |-
+                          cd .yarn
+                          ls -a
+                  - step:
+                      type: SaveCacheGCS
+                      name: Save Yarn cache
+                      identifier: Save_Yarn_cache
+                      spec:
+                        connectorRef: gcpdhruba
+                        bucket: test-storybook-yarn
+                        key: prettydocs-yarn-2-cache-v4--{{ checksum "code/yarn.lock" }}--{{ checksum "scripts/yarn.lock" }}
+                        sourcePaths:
+                          - .yarn/berry/cache
+                        archiveFormat: Tar
+                  - step:
+                      type: Run
+                      name: Prettier
+                      identifier: Prettier
+                      spec:
+                        shell: Sh
+                        command: |-
+                          #!/bin/bash -eo pipefail
+                          cd scripts
+                          yarn docs:prettier:check
+                      when:
+                        stageStatus: All
+                      failureStrategies: []
+        - stage:
+            name: build
+            identifier: build
+            description: ""
+            type: CI
+            spec:
+              cloneCodebase: true
+              platform:
+                os: Linux
+                arch: Amd64
+              runtime:
+                type: Cloud
+                spec: {}
+              execution:
+                steps:
+                  - step:
+                      type: Run
+                      name: Compile
+                      identifier: Compile
+                      spec:
+                        shell: Sh
+                        command: |-
+                          #!/bin/bash -eo pipefail
+                          yarn task --task compile --start-from=auto --no-link --debug
+                          git diff --exit-code
+                  - step:
+                      type: Run
+                      name: Publish to verdaccio
+                      identifier: Publish_to_verdaccio
+                      spec:
+                        shell: Sh
+                        command: |-
+                          #!/bin/bash -eo pipefail
+                          cd code
+                          yarn local-registry --publish
+                  - step:
+                      type: Run
+                      name: Provide error if curl is not present
+                      identifier: Provide_error_if_curl_is_not_present
+                      spec:
+                        shell: Sh
+                        command: |-
+                          #!/bin/bash -eo pipefail
+                          which curl > curl_exists; echo $? | grep -q '1' && echo curl not installed && rm curl_exists && exit 1
+                          rm curl_exists
+                  - step:
+                      type: Run
+                      name: Discord setting success condition
+                      identifier: Discord_setting_success_condition
+                      spec:
+                        shell: Sh
+                        command: |-
+                          #!/bin/bash -eo pipefail
+                          echo 'export DISCORD_BUILD_STATUS="success"' 
+                  - step:
+                      type: Run
+                      name: Provide if non bash shell
+                      identifier: Provide_if_non_bash_shell
+                      spec:
+                        shell: Sh
+                        command: |-
+                          #!/bin/bash -eo pipefail
+                          if [ ! -x /bin/bash ]; then
+                            echo Bash not installed.
+                            exit 1
+                          fi
+
+                          ls
+                  - step:
+                      type: SaveCacheGCS
+                      name: Save Yarn Cache
+                      identifier: Save_Yarn_Cache
+                      spec:
+                        connectorRef: gcpdhruba
+                        bucket: test-storybook-yarn
+                        key: prettydocs-yarn-2-cache-v4--{{ checksum "code/yarn.lock" }}--{{ checksum "scripts/yarn.lock" }}
+                        sourcePaths:
+                          - .yarn/berry/cache
+                        archiveFormat: Tar
