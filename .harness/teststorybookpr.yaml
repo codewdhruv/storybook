@@ -56,3 +56,16 @@ pipeline:
                     sourcePaths:
                       - .yarn/berry/cache
                     archiveFormat: Tar
+              - step:
+                  type: Run
+                  name: Prettier
+                  identifier: Prettier
+                  spec:
+                    shell: Sh
+                    command: |-
+                      #!/bin/bash -eo pipefail
+                      cd scripts
+                      yarn docs:prettier:check
+                  when:
+                    stageStatus: All
+                  failureStrategies: []
