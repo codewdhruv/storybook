@@ -236,4 +236,6 @@ pipeline:
                           cd code
                           yarn storybook:ui:chromatic
                           yarn storybook:blocks:chromatic
+            when:
+              pipelineStatus: All
   allowStageExecutions: true
