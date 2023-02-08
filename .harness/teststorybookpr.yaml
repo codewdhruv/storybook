@@ -42,7 +42,9 @@ pipeline:
                   identifier: Run_2
                   spec:
                     shell: Sh
-                    command: ls -a
+                    command: |-
+                      cd .yarn
+                      ls -a
               - step:
                   type: SaveCacheGCS
                   name: Save Yarn cache
