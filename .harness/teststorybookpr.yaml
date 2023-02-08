@@ -227,7 +227,6 @@ pipeline:
         - stage:
             name: chromatic-internal-storybooks
             identifier: chromaticinternalstorybooks
-            description: ""
             type: CI
             spec:
               cloneCodebase: true
@@ -244,11 +243,18 @@ pipeline:
                       name: Running Chromatic
                       identifier: Running_Chromatic
                       spec:
+                        connectorRef: harnessdocker
+                        image: cimg/node:16.17.1-browsers
                         shell: Sh
                         command: |-
                           #!/bin/bash -eo pipefail
                           cd code
-                          npm install
+                          yarn storybook:ui:chromatic
+                          yarn storybook:blocks:chromatic
+                        envVariables:
+                          NODE_OPTIONS: "--max_old_space_size=6144"
+              sharedPaths:
+                - /tmp/storybook
             when:
               pipelineStatus: All
   allowStageExecutions: true
