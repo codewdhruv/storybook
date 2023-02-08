@@ -149,6 +149,8 @@ pipeline:
                         sourcePaths:
                           - .yarn/berry/cache
                         archiveFormat: Tar
+            when:
+              pipelineStatus: All
     - stage:
         name: check
         identifier: check
