@@ -149,3 +149,30 @@ pipeline:
                         sourcePaths:
                           - .yarn/berry/cache
                         archiveFormat: Tar
+    - stage:
+        name: check
+        identifier: check
+        description: ""
+        type: CI
+        spec:
+          cloneCodebase: true
+          platform:
+            os: Linux
+            arch: Amd64
+          runtime:
+            type: Cloud
+            spec: {}
+          execution:
+            steps:
+              - step:
+                  type: Run
+                  name: check
+                  identifier: check
+                  spec:
+                    shell: Sh
+                    command: |-
+                      #!/bin/bash -eo pipefail
+                      yarn task --task check --start-from=auto --no-link --debug
+                      git diff --exit-code
+        when:
+          pipelineStatus: All
