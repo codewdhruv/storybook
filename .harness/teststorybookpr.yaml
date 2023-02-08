@@ -1,0 +1,49 @@
+pipeline:
+  name: test-storybook-pr
+  identifier: teststorybookpr
+  projectIdentifier: NgLabs
+  orgIdentifier: default
+  tags: {}
+  properties:
+    ci:
+      codebase:
+        connectorRef: gitconnectordhruba
+        repoName: storybook
+        build: <+input>
+  stages:
+    - stage:
+        name: pretty docs
+        identifier: pretty_docs
+        description: ""
+        type: CI
+        spec:
+          cloneCodebase: true
+          platform:
+            os: Linux
+            arch: Amd64
+          runtime:
+            type: Cloud
+            spec: {}
+          execution:
+            steps:
+              - step:
+                  type: Run
+                  name: Install Yarn
+                  identifier: Install_Yarn
+                  spec:
+                    shell: Sh
+                    command: |-
+                      #!/bin/bash -eo pipefail
+                      cd scripts
+                      yarn install
+              - step:
+                  type: SaveCacheGCS
+                  name: Save Yarn cache
+                  identifier: Save_Yarn_cache
+                  spec:
+                    connectorRef: gcpdhruba
+                    bucket: test-storybook-yarn
+                    key: prettydocs-yarn-2-cache-v4--{{ checksum "code/yarn.lock" }}--{{ checksum "scripts/yarn.lock" }}
+                    sourcePaths:
+                      - ~/.yarn/berry/cache
+                    archiveFormat: Tar
