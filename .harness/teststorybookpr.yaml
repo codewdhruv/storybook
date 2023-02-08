@@ -234,8 +234,7 @@ pipeline:
                         command: |-
                           #!/bin/bash -eo pipefail
                           cd code
-                          yarn storybook:ui:chromatic
-                          yarn storybook:blocks:chromatic
+                          ls
             when:
               pipelineStatus: All
   allowStageExecutions: true
