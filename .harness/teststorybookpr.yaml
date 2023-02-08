@@ -176,6 +176,37 @@ pipeline:
                       #!/bin/bash -eo pipefail
                       yarn task --task check --start-from=auto --no-link --debug
                       git diff --exit-code
+              - step:
+                  type: Run
+                  name: Provide error if curl is not installed
+                  identifier: Provide_error_if_curl_is_not_installed
+                  spec:
+                    shell: Sh
+                    command: |-
+                      #!/bin/bash -eo pipefail
+                      which curl > curl_exists; echo $? | grep -q '1' && echo curl not installed && rm curl_exists && exit 1
+                      rm curl_exists
+              - step:
+                  type: Run
+                  name: Discord setting success
+                  identifier: Discord_setting_success
+                  spec:
+                    shell: Sh
+                    command: |-
+                      #!/bin/bash -eo pipefail
+                      echo 'export DISCORD_BUILD_STATUS="success"' 
+              - step:
+                  type: Run
+                  name: Provide error if non bash shell
+                  identifier: Provide_error_if_non_bash_shell
+                  spec:
+                    shell: Sh
+                    command: |-
+                      #!/bin/bash -eo pipefail
+                      if [ ! -x /bin/bash ]; then
+                        echo Bash not installed.
+                        exit 1
+                      fi
         when:
           pipelineStatus: All
   allowStageExecutions: true
