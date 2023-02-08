@@ -178,3 +178,4 @@ pipeline:
                       git diff --exit-code
         when:
           pipelineStatus: All
+  allowStageExecutions: true
