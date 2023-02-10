@@ -180,6 +180,15 @@ pipeline:
                 steps:
                   - step:
                       type: Run
+                      name: Run_2
+                      identifier: Run_2
+                      spec:
+                        shell: Sh
+                        command: |-
+                          cd code
+                          yarn install
+                  - step:
+                      type: Run
                       name: Run_1
                       identifier: Run_1
                       spec:
