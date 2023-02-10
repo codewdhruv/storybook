@@ -30,8 +30,6 @@ pipeline:
                   name: Compile
                   identifier: Compile
                   spec:
-                    connectorRef: harnessnew
-                    image: cimg/node:16.17.1
                     shell: Sh
                     command: |-
                       #!/bin/bash -eo pipefail
