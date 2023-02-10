@@ -42,8 +42,6 @@ pipeline:
                   name: Publish to verdaccio
                   identifier: Publish_to_verdaccio
                   spec:
-                    connectorRef: harnessnew
-                    image: cimg/node:16.17.1
                     shell: Sh
                     command: |-
                       #!/bin/bash -eo pipefail
@@ -56,8 +54,6 @@ pipeline:
                   name: Provide error if curl is not present
                   identifier: Provide_error_if_curl_is_not_present
                   spec:
-                    connectorRef: harnessnew
-                    image: cimg/node:16.17.1
                     shell: Sh
                     command: |-
                       #!/bin/bash -eo pipefail
@@ -70,8 +66,6 @@ pipeline:
                   name: Discord setting success condition
                   identifier: Discord_setting_success_condition
                   spec:
-                    connectorRef: harnessnew
-                    image: cimg/node:16.17.1
                     shell: Sh
                     command: |-
                       #!/bin/bash -eo pipefail
@@ -83,8 +77,6 @@ pipeline:
                   name: Provide if non bash shell
                   identifier: Provide_if_non_bash_shell
                   spec:
-                    connectorRef: harnessnew
-                    image: cimg/node:16.17.1
                     shell: Sh
                     command: |-
                       #!/bin/bash -eo pipefail
