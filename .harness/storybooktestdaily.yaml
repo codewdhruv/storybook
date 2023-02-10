@@ -157,6 +157,8 @@ pipeline:
                           yarn task --task sandbox --template $(yarn get-template daily sandbox) --no-link --start-from=never --junit
                         envVariables:
                           NODE_OPTIONS: "--max_old_space_size=6144"
+            when:
+              pipelineStatus: All
         - stage:
             name: lint
             identifier: lint
@@ -212,6 +214,8 @@ pipeline:
                           cd code
                           ls
                           yarn lint
+            when:
+              pipelineStatus: All
         - stage:
             name: unit-tests
             identifier: unittests
@@ -266,6 +270,8 @@ pipeline:
                           #!/bin/bash -eo pipefail
                           cd code
                           yarn test --coverage --ci --maxWorkers=6
+            when:
+              pipelineStatus: All
     - stage:
         name: build-sandboxes
         identifier: buildsandboxes
@@ -304,4 +310,6 @@ pipeline:
                   failureStrategies: []
         strategy:
           parallelism: 31
+        when:
+          pipelineStatus: All
   allowStageExecutions: true
