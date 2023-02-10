@@ -31,45 +31,63 @@ pipeline:
                   name: Compile
                   identifier: Compile
                   spec:
+                    connectorRef: harnessnew
+                    image: cimg/node:16.17.1
                     shell: Sh
                     command: |-
                       #!/bin/bash -eo pipefail
                       yarn task --task compile --start-from=auto --no-link --debug
                       git diff --exit-code
+                    envVariables:
+                      NODE_OPTIONS: "--max_old_space_size=6144"
               - step:
                   type: Run
                   name: Publish to verdaccio
                   identifier: Publish_to_verdaccio
                   spec:
+                    connectorRef: harnessnew
+                    image: cimg/node:16.17.1
                     shell: Sh
                     command: |-
                       #!/bin/bash -eo pipefail
                       cd code
                       yarn local-registry --publish
+                    envVariables:
+                      NODE_OPTIONS: "--max_old_space_size=6144"
               - step:
                   type: Run
                   name: Provide error if curl is not present
                   identifier: Provide_error_if_curl_is_not_present
                   spec:
+                    connectorRef: harnessnew
+                    image: cimg/node:16.17.1
                     shell: Sh
                     command: |-
                       #!/bin/bash -eo pipefail
                       which curl > curl_exists; echo $? | grep -q '1' && echo curl not installed && rm curl_exists && exit 1
                       rm curl_exists
+                    envVariables:
+                      NODE_OPTIONS: "--max_old_space_size=6144"
               - step:
                   type: Run
                   name: Discord setting success condition
                   identifier: Discord_setting_success_condition
                   spec:
+                    connectorRef: harnessnew
+                    image: cimg/node:16.17.1
                     shell: Sh
                     command: |-
                       #!/bin/bash -eo pipefail
-                      echo 'export DISCORD_BUILD_STATUS="success"' 
+                      echo 'export DISCORD_BUILD_STATUS="success"'
+                    envVariables:
+                      NODE_OPTIONS: "--max_old_space_size=6144"
               - step:
                   type: Run
                   name: Provide if non bash shell
                   identifier: Provide_if_non_bash_shell
                   spec:
+                    connectorRef: harnessnew
+                    image: cimg/node:16.17.1
                     shell: Sh
                     command: |-
                       #!/bin/bash -eo pipefail
@@ -79,6 +97,8 @@ pipeline:
                       fi
 
                       ls
+                    envVariables:
+                      NODE_OPTIONS: "--max_old_space_size=6144"
               - step:
                   type: SaveCacheGCS
                   name: Save Yarn Cache
