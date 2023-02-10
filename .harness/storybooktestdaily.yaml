@@ -101,3 +101,31 @@ pipeline:
                     archiveFormat: Tar
           sharedPaths:
             - /tmp/storybook/
+    - stage:
+        name: create-sandboxes
+        identifier: createsandboxes
+        description: ""
+        type: CI
+        spec:
+          cloneCodebase: true
+          platform:
+            os: Linux
+            arch: Amd64
+          runtime:
+            type: Cloud
+            spec: {}
+          execution:
+            steps:
+              - step:
+                  type: Run
+                  name: Creating sandboxes
+                  identifier: Creating_sandboxes
+                  spec:
+                    connectorRef: harnessnew
+                    image: cimg/node:16.17.1-browsers
+                    shell: Sh
+                    command: |-
+                      #!/bin/bash -eo pipefail
+                      yarn task --task sandbox --template $(yarn get-template daily sandbox) --no-link --start-from=never --junit
+                    envVariables:
+                      NODE_OPTIONS: "--max_old_space_size=6144"
