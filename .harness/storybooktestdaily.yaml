@@ -312,4 +312,28 @@ pipeline:
           parallelism: 31
         when:
           pipelineStatus: All
+    - stage:
+        name: chromatic-sandboxes
+        identifier: chromaticsandboxes
+        description: ""
+        type: CI
+        spec:
+          cloneCodebase: true
+          platform:
+            os: Linux
+            arch: Amd64
+          runtime:
+            type: Cloud
+            spec: {}
+          execution:
+            steps:
+              - step:
+                  type: Run
+                  name: Run chromatic
+                  identifier: Run_chromatic
+                  spec:
+                    shell: Sh
+                    command: |-
+                      #!/bin/bash -eo pipefail
+                      yarn task --task chromatic --template $(yarn get-template daily chromatic) --no-link --start-from=never --junit
   allowStageExecutions: true
