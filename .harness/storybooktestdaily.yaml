@@ -14,7 +14,6 @@ pipeline:
     - stage:
         name: build
         identifier: build
-        description: ""
         type: CI
         spec:
           cloneCodebase: true
@@ -110,3 +109,5 @@ pipeline:
                     sourcePaths:
                       - .yarn/berry/cache
                     archiveFormat: Tar
+          sharedPaths:
+            - /tmp/storybook/
