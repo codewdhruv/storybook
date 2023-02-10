@@ -162,4 +162,5 @@ pipeline:
                           #!/bin/bash -eo pipefail
                           cd code
                           ls
+                          yarn lint
   allowStageExecutions: true
