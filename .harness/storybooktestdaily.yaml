@@ -163,4 +163,29 @@ pipeline:
                           cd code
                           ls
                           yarn lint
+        - stage:
+            name: unit-tests
+            identifier: unittests
+            description: ""
+            type: CI
+            spec:
+              cloneCodebase: true
+              platform:
+                os: Linux
+                arch: Amd64
+              runtime:
+                type: Cloud
+                spec: {}
+              execution:
+                steps:
+                  - step:
+                      type: Run
+                      name: Run_1
+                      identifier: Run_1
+                      spec:
+                        shell: Sh
+                        command: |-
+                          #!/bin/bash -eo pipefail
+                          cd code
+                          yarn test --coverage --ci --maxWorkers=6
   allowStageExecutions: true
