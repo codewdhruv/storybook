@@ -119,6 +119,26 @@ pipeline:
                 steps:
                   - step:
                       type: Run
+                      name: Run_2
+                      identifier: Run_2
+                      spec:
+                        shell: Sh
+                        command: |-
+                          #!/bin/bash -eo pipefail
+                          yarn task --task compile --start-from=auto --no-link --debug
+                          git diff --exit-code
+                  - step:
+                      type: Run
+                      name: Run_3
+                      identifier: Run_3
+                      spec:
+                        shell: Sh
+                        command: |-
+                          #!/bin/bash -eo pipefail
+                          cd code
+                          yarn local-registry --publish
+                  - step:
+                      type: Run
                       name: Creating sandboxes
                       identifier: Creating_sandboxes
                       spec:
