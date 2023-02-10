@@ -266,4 +266,37 @@ pipeline:
                           #!/bin/bash -eo pipefail
                           cd code
                           yarn test --coverage --ci --maxWorkers=6
+    - stage:
+        name: build-sandboxes
+        identifier: buildsandboxes
+        description: ""
+        type: CI
+        spec:
+          cloneCodebase: true
+          platform:
+            os: Linux
+            arch: Amd64
+          runtime:
+            type: Cloud
+            spec: {}
+          execution:
+            steps:
+              - step:
+                  type: Run
+                  name: Run_1
+                  identifier: Run_1
+                  spec:
+                    shell: Sh
+                    command: |-
+                      #!/bin/bash -eo pipefail
+                      yarn task --task build --template $(yarn get-template daily build) --no-link --start-from=never --junit
+              - step:
+                  type: Run
+                  name: Run_2
+                  identifier: Run_2
+                  spec:
+                    shell: Sh
+                    command: |
+                      #!/bin/bash -eo pipefail
+                      yarn ts-node ./event-log-checker build $(yarn get-template daily build)
   allowStageExecutions: true
