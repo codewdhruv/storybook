@@ -101,30 +101,56 @@ pipeline:
                     archiveFormat: Tar
           sharedPaths:
             - /tmp/storybook/
-    - stage:
-        name: create-sandboxes
-        identifier: createsandboxes
-        description: ""
-        type: CI
-        spec:
-          cloneCodebase: true
-          platform:
-            os: Linux
-            arch: Amd64
-          runtime:
-            type: Cloud
-            spec: {}
-          execution:
-            steps:
-              - step:
-                  type: Run
-                  name: Creating sandboxes
-                  identifier: Creating_sandboxes
-                  spec:
-                    shell: Sh
-                    command: |-
-                      #!/bin/bash -eo pipefail
-                      yarn task --task sandbox --template $(yarn get-template daily sandbox) --no-link --start-from=never --junit
-                    envVariables:
-                      NODE_OPTIONS: "--max_old_space_size=6144"
+    - parallel:
+        - stage:
+            name: create-sandboxes
+            identifier: createsandboxes
+            description: ""
+            type: CI
+            spec:
+              cloneCodebase: true
+              platform:
+                os: Linux
+                arch: Amd64
+              runtime:
+                type: Cloud
+                spec: {}
+              execution:
+                steps:
+                  - step:
+                      type: Run
+                      name: Creating sandboxes
+                      identifier: Creating_sandboxes
+                      spec:
+                        shell: Sh
+                        command: |-
+                          #!/bin/bash -eo pipefail
+                          yarn task --task sandbox --template $(yarn get-template daily sandbox) --no-link --start-from=never --junit
+                        envVariables:
+                          NODE_OPTIONS: "--max_old_space_size=6144"
+        - stage:
+            name: lint
+            identifier: lint
+            description: ""
+            type: CI
+            spec:
+              cloneCodebase: true
+              platform:
+                os: Linux
+                arch: Amd64
+              runtime:
+                type: Cloud
+                spec: {}
+              execution:
+                steps:
+                  - step:
+                      type: Run
+                      name: Run_1
+                      identifier: Run_1
+                      spec:
+                        shell: Sh
+                        command: |-
+                          #!/bin/bash -eo pipefail
+                          cd code
+                          yarn lint
   allowStageExecutions: true
