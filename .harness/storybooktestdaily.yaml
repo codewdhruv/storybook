@@ -299,4 +299,7 @@ pipeline:
                     command: |
                       #!/bin/bash -eo pipefail
                       yarn ts-node ./event-log-checker build $(yarn get-template daily build)
+                  when:
+                    stageStatus: All
+                  failureStrategies: []
   allowStageExecutions: true
