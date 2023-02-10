@@ -302,4 +302,6 @@ pipeline:
                   when:
                     stageStatus: All
                   failureStrategies: []
+        strategy:
+          parallelism: 31
   allowStageExecutions: true
