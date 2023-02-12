@@ -151,6 +151,8 @@ pipeline:
                       name: Run_5
                       identifier: Run_5
                       spec:
+                        connectorRef: harnessnew
+                        image: cimg/node:16.17.1-browsers
                         shell: Sh
                         command: yarn get-template daily sandbox
                       failureStrategies: []
@@ -163,6 +165,8 @@ pipeline:
                       name: Creating sandboxes
                       identifier: Creating_sandboxes
                       spec:
+                        connectorRef: harnessnew
+                        image: cimg/node:16.17.1-browsers
                         shell: Sh
                         command: |-
                           #!/bin/bash -eo pipefail
