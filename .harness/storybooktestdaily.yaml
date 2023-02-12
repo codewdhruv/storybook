@@ -157,7 +157,7 @@ pipeline:
                         command: yarn get-template daily sandbox
                       failureStrategies: []
                       strategy:
-                        parallelism: 31
+                        parallelism: 2
                       when:
                         stageStatus: All
                   - step:
