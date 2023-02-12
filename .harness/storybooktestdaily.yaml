@@ -148,6 +148,13 @@ pipeline:
                           yarn local-registry --publish
                   - step:
                       type: Run
+                      name: Run_5
+                      identifier: Run_5
+                      spec:
+                        shell: Sh
+                        command: yarn get-template daily sandbox
+                  - step:
+                      type: Run
                       name: Creating sandboxes
                       identifier: Creating_sandboxes
                       spec:
