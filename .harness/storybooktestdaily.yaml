@@ -156,6 +156,8 @@ pipeline:
                       failureStrategies: []
                       strategy:
                         parallelism: 31
+                      when:
+                        stageStatus: All
                   - step:
                       type: Run
                       name: Creating sandboxes
