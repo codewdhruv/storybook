@@ -154,7 +154,7 @@ pipeline:
                         shell: Sh
                         command: |-
                           #!/bin/bash -eo pipefail
-                          yarn task --task sandbox --template yarn get-template sandbox --junit
+                          yarn task --task sandbox --template sandbox --no-link --start-from=never --junit
                         envVariables:
                           NODE_OPTIONS: "--max_old_space_size=6144"
                       when:
