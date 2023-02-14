@@ -377,8 +377,8 @@ pipeline:
                     command: |-
                       #!/bin/bash -eo pipefail
                       cd code
-                      yarn ui:chromatic
-                      yarn blocks:chromatic
+                      yarn run ui:chromatic
+                      yarn run blocks:chromatic
                     envVariables:
                       NODE_OPTIONS: "--max_old_space_size=6144"
         when:
