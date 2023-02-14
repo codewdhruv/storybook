@@ -374,7 +374,9 @@ pipeline:
                     shell: Sh
                     command: |-
                       #!/bin/bash -eo pipefail
-                      yarn task --task chromatic --template $(yarn get-template daily chromatic) --no-link --start-from=never --junit
+                      cd code
+                      yarn storybook:ui:chromatic
+                      yarn storybook:blocks:chromatic
         when:
           pipelineStatus: All
   allowStageExecutions: true
