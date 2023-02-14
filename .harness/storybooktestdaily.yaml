@@ -375,10 +375,9 @@ pipeline:
                     image: cimg/node:16.17.1-browsers
                     shell: Sh
                     command: |-
-                      #!/bin/bash -eo pipefail
                       cd code
-                      yarn run ui:chromatic
-                      yarn run blocks:chromatic
+                      yarn storybook:ui:chromatic
+                      yarn storybook:blocks:chromatic
                     envVariables:
                       NODE_OPTIONS: "--max_old_space_size=6144"
         when:
