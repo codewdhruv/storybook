@@ -172,8 +172,13 @@ pipeline:
                         shell: Sh
                         command: |
                           #!/bin/bash -eo pipefail
-                          cd /tmp/storybook/
+
                           yarn task --task sandbox --template cra/default-js --no-link --start-from=never --junit
+                        reports:
+                          type: JUnit
+                          spec:
+                            paths:
+                              - /tmp/storybook/
                         envVariables:
                           NODE_OPTIONS: "--max_old_space_size=6144"
                       when:
