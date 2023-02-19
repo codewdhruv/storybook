@@ -154,7 +154,9 @@ pipeline:
                         connectorRef: harnessnew
                         image: cimg/node:16.17.1-browsers
                         shell: Sh
-                        command: echo <+pipeline.name>
+                        command: yarn task --task sandbox --template $<+pipeline.variables.getValue("temp")> --no-link --start-from=never --junit
+                        envVariables:
+                          temp: yarn get-template <+pipeline.name> sandbox
                       failureStrategies: []
                       strategy:
                         parallelism: 2
