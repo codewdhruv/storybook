@@ -172,7 +172,7 @@ pipeline:
                         shell: Sh
                         command: |-
                           #!/bin/bash -eo pipefail
-                          yarn task --task sandbox --start-from=never --junit
+                          yarn task --task sandbox --template $(yarn get-template <+pipeline.name> sandbox) --start-from=never --junit
                         envVariables:
                           NODE_OPTIONS: "--max_old_space_size=6144"
                       when:
