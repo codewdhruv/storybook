@@ -123,7 +123,7 @@ pipeline:
                       spec:
                         shell: Sh
                         command: |-
-                          ls
+                          ls -a
                           cd code
                           yarn install
                   - step:
