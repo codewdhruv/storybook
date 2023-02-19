@@ -169,9 +169,9 @@ pipeline:
                         connectorRef: harnessnew
                         image: cimg/node:16.17.1-browsers
                         shell: Sh
-                        command: |-
+                        command: |
                           #!/bin/bash -eo pipefail
-                          yarn task --task sandbox --start-from auto --template $(yarn get-template <+pipeline.name> sandbox)
+                          yarn task --task sandbox --template cra/default-js --no-link --start-from=never --junit
                         envVariables:
                           NODE_OPTIONS: "--max_old_space_size=6144"
                       when:
