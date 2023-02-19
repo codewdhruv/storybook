@@ -105,7 +105,6 @@ pipeline:
         - stage:
             name: create-sandboxes
             identifier: createsandboxes
-            description: ""
             type: CI
             spec:
               cloneCodebase: true
@@ -178,6 +177,8 @@ pipeline:
                       when:
                         stageStatus: All
                       failureStrategies: []
+              sharedPaths:
+                - /tmp/storybook/
             when:
               pipelineStatus: All
         - stage:
